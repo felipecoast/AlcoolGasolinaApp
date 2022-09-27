@@ -10,9 +10,10 @@ import UIKit
 class ViewController: UIViewController, UITextFieldDelegate {
 
     @IBOutlet weak var appNameLabel: UILabel!
-    @IBOutlet weak var gasolineAlcoolLabel: UILabel!
+    @IBOutlet weak var gasolineAlcoholLabel: UILabel!
+    @IBOutlet weak var resultLabel: UILabel!
     
-    @IBOutlet weak var alcoolTextField: UITextField!
+    @IBOutlet weak var alcoholTextField: UITextField!
     @IBOutlet weak var gasolineTextField: UITextField!
     
     @IBOutlet weak var calculateButton: UIButton!
@@ -29,16 +30,17 @@ class ViewController: UIViewController, UITextFieldDelegate {
     
     func configLabel() {
         appNameLabel.text = "Álcool OU Gasolina"
-        gasolineAlcoolLabel.text = "     Preço Álcool           Preço Gasolina"
+        gasolineAlcoholLabel.text = "     Preço Álcool           Preço Gasolina"
+        resultLabel.text = "Resultado"
     }
     
     func configTextField() {
-        alcoolTextField.placeholder = "Ex: 1.99"
+        alcoholTextField.placeholder = "Ex: 1.99"
         gasolineTextField.placeholder = "Ex: 2.99"
-        alcoolTextField.textAlignment = .center
+        alcoholTextField.textAlignment = .center
         gasolineTextField.textAlignment = .center
         
-        alcoolTextField.delegate = self
+        alcoholTextField.delegate = self
         gasolineTextField.delegate = self
     }
     
@@ -65,7 +67,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
             textField.layer.borderWidth = 0
         }
         
-        if alcoolTextField.text == "" || gasolineTextField.text == "" {
+        if alcoholTextField.text == "" || gasolineTextField.text == "" {
             calculateButton.isEnabled = false
         } else {
             calculateButton.isEnabled = true
@@ -77,8 +79,21 @@ class ViewController: UIViewController, UITextFieldDelegate {
         textField.resignFirstResponder()
         return true
     }
+    
+    func calculate() {
+        let alcoholValue: Double = Double(alcoholTextField.text ?? "0") ?? 0
+        let gasolineValue: Double = Double(gasolineTextField.text ?? "0") ?? 0
+        if alcoholValue / gasolineValue > 0.70 {
+            resultLabel.text = "É melhor ir de gasolina."
+        } else if alcoholValue / gasolineValue < 0.70 {
+            resultLabel.text = "É melhor ir de alcool."
+        } else {
+            resultLabel.text = "Valor inválido."
+        }
+    }
 
     @IBAction func tappedCalculateButton(_ sender: UIButton) {
+        calculate()
     }
     
     @IBAction func tappedWritePricesButton(_ sender: UIButton) {
