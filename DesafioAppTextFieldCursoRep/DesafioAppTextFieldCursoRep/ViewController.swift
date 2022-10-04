@@ -40,6 +40,9 @@ class ViewController: UIViewController, UITextFieldDelegate {
         alcoholTextField.textAlignment = .center
         gasolineTextField.textAlignment = .center
         
+        alcoholTextField.keyboardType = .decimalPad
+        gasolineTextField.keyboardType = .decimalPad
+        
         alcoholTextField.delegate = self
         gasolineTextField.delegate = self
     }
@@ -47,11 +50,11 @@ class ViewController: UIViewController, UITextFieldDelegate {
     func configButton() {
         calculateButton.setTitle("Calcular", for: .normal)
         calculateButton.backgroundColor = .blue
-        calculateButton.tintColor = .white
+        calculateButton.setTitleColor(.white, for: .normal)
         
         writePricesButton.setTitle("Digite os Preços!", for: .normal)
         writePricesButton.backgroundColor = .blue
-        writePricesButton.tintColor = .white
+        writePricesButton.setTitleColor(.white, for: .normal)
     }
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
@@ -81,8 +84,9 @@ class ViewController: UIViewController, UITextFieldDelegate {
     }
     
     func calculate() {
-        let alcoholValue: Double = Double(alcoholTextField.text ?? "0") ?? 0
-        let gasolineValue: Double = Double(gasolineTextField.text ?? "0") ?? 0
+        let alcoholValue: Double = Double((alcoholTextField.text ?? "0.0").replacingOccurrences(of: ",", with: ".")) ?? 0.0
+        let gasolineValue: Double = Double((gasolineTextField.text ?? "0.0").replacingOccurrences(of: ",", with: ".")) ?? 0.0
+        
         if alcoholValue / gasolineValue > 0.70 {
             resultLabel.text = "É melhor ir de gasolina."
         } else if alcoholValue / gasolineValue < 0.70 {
@@ -91,6 +95,8 @@ class ViewController: UIViewController, UITextFieldDelegate {
             resultLabel.text = "Valor inválido."
         }
     }
+    
+    
 
     @IBAction func tappedCalculateButton(_ sender: UIButton) {
         calculate()
@@ -101,3 +107,4 @@ class ViewController: UIViewController, UITextFieldDelegate {
     
 }
 
+//decimalpad
